@@ -3,1015 +3,235 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WHO AM I - App Store</title>
+    <title>WAKAAR | Hacker Terminal</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    
     <style>
+        :root {
+            --neon-green: #00ff41;
+            --dark-bg: #0d0d0d;
+            --terminal-gray: #1a1a1a;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: #ffffff;
+            background-color: var(--dark-bg);
+            color: var(--neon-green);
+            display: flex;
+            flex-direction: column;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        /* Header Styles */
+        /* --- Header / Logo Section --- */
         header {
-            background: rgba(0, 0, 0, 0.5);
-            backdrop-filter: blur(10px);
-            padding: 1.5rem 2rem;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-        }
-
-        .header-content {
-            max-width: 1400px;
-            margin: 0 auto;
+            padding: 20px;
             display: flex;
-            justify-content: space-between;
             align-items: center;
-        }
-
-        .logo {
-            font-size: 2rem;
-            font-weight: 800;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            letter-spacing: 2px;
-        }
-
-        .admin-btn {
-            padding: 0.8rem 2rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-        }
-
-        .admin-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        /* Main Container */
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 3rem 2rem;
-        }
-
-        /* Search Container */
-        .search-container {
-            max-width: 800px;
-            margin: 0 auto 2rem;
-            padding-top: 1rem;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 1.2rem 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 50px;
-            color: white;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: rgba(102, 126, 234, 0.8);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-        }
-
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        /* Hero Section */
-        .hero {
-            text-align: center;
-            margin-bottom: 4rem;
-            padding: 1rem 0;
-        }
-
-        .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            color: rgba(255, 255, 255, 0.7);
-        }
-
-        /* App Grid */
-        .apps-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 2rem;
-            margin-bottom: 4rem;
-        }
-
-        .app-card {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 1.5rem;
-            transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .app-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-            border-color: rgba(102, 126, 234, 0.5);
-        }
-
-        .app-icon {
-            width: 80px;
-            height: 80px;
-            border-radius: 20px;
-            margin-bottom: 1rem;
-            object-fit: cover;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-        }
-
-        .app-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .app-category {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .app-description {
-            color: rgba(255, 255, 255, 0.7);
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-
-        .screenshots {
-            display: flex;
-            gap: 0.5rem;
-            overflow-x: auto;
-            margin-bottom: 1rem;
-            padding: 0.5rem 0;
-        }
-
-        .screenshots::-webkit-scrollbar {
-            height: 6px;
-        }
-
-        .screenshots::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 10px;
-        }
-
-        .screenshots::-webkit-scrollbar-thumb {
-            background: rgba(102, 126, 234, 0.5);
-            border-radius: 10px;
-        }
-
-        .screenshot {
-            width: 150px;
-            height: 250px;
-            object-fit: cover;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .screenshot:hover {
-            transform: scale(1.05);
-        }
-
-        .download-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            margin-bottom: 0.5rem;
-        }
-
-        .download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .app-version {
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 0.85rem;
-        }
-
-        /* Modal Styles */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.9);
-            z-index: 2000;
             justify-content: center;
-            align-items: center;
-            padding: 2rem;
+            border-bottom: 2px solid var(--neon-green);
+            box-shadow: 0 0 15px var(--neon-green);
+            background: black;
         }
 
-        .modal-content {
-            background: linear-gradient(135deg, #1e1e2e, #2d2d44);
-            border-radius: 20px;
-            padding: 2.5rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
-            position: relative;
-        }
-
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            background: none;
-            border: none;
-            color: white;
-            font-size: 2rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .close-modal:hover {
-            transform: rotate(90deg);
-            color: #667eea;
-        }
-
-        .modal h2 {
-            margin-bottom: 2rem;
-            text-align: center;
-            font-size: 2rem;
-        }
-
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            color: rgba(255, 255, 255, 0.8);
-            font-weight: 500;
-        }
-
-        .form-group input,
-        .form-group textarea {
-            width: 100%;
-            padding: 1rem;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            color: white;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-        }
-
-        .form-group input:focus,
-        .form-group textarea:focus {
-            outline: none;
-            border-color: #667eea;
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        .form-group textarea {
-            resize: vertical;
-            min-height: 100px;
-        }
-
-        .submit-btn {
-            width: 100%;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
-        }
-
-        .submit-btn:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
-
-        /* Admin Panel */
-        .admin-panel {
-            display: none;
-        }
-
-        .admin-header {
+        .logo-container {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-bottom: 2rem;
+            gap: 15px;
         }
 
-        .logout-btn {
-            padding: 0.8rem 2rem;
-            background: rgba(255, 59, 48, 0.8);
-            border: none;
-            border-radius: 50px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .profile-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 2px solid var(--neon-green);
+            background: url('https://i.pinimg.com/originals/e8/88/d4/e888d400ee1d60d0360639bc077ef2cf.jpg') center/cover;
+            box-shadow: 0 0 10px var(--neon-green);
         }
 
-        .logout-btn:hover {
-            background: rgba(255, 59, 48, 1);
-            transform: translateY(-2px);
-        }
-
-        .upload-section {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 3rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .file-input-wrapper {
-            position: relative;
-            margin-bottom: 1rem;
-        }
-
-        .file-input-wrapper input[type="file"] {
-            display: none;
-        }
-
-        .file-input-label {
-            display: block;
-            padding: 1rem;
-            background: rgba(102, 126, 234, 0.2);
-            border: 2px dashed rgba(102, 126, 234, 0.5);
-            border-radius: 10px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .file-input-label:hover {
-            background: rgba(102, 126, 234, 0.3);
-            border-color: rgba(102, 126, 234, 0.8);
-        }
-
-        .manage-apps {
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 2rem;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .manage-apps h3 {
-            margin-bottom: 1.5rem;
-            font-size: 1.5rem;
-        }
-
-        .app-list-item {
-            background: rgba(255, 255, 255, 0.05);
-            padding: 1rem;
-            border-radius: 10px;
-            margin-bottom: 1rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .delete-btn {
-            padding: 0.5rem 1.5rem;
-            background: rgba(255, 59, 48, 0.8);
-            border: none;
-            border-radius: 25px;
-            color: white;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .delete-btn:hover {
-            background: rgba(255, 59, 48, 1);
-        }
-
-        /* Footer */
-        footer {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 2rem;
-            text-align: center;
-            margin-top: 4rem;
-        }
-
-        footer p {
-            color: rgba(255, 255, 255, 0.6);
-        }
-
-        /* Empty State */
-        .empty-state {
-            text-align: center;
-            padding: 4rem 2rem;
-            color: rgba(255, 255, 255, 0.5);
-        }
-
-        .empty-state h3 {
+        .logo-text {
             font-size: 2rem;
-            margin-bottom: 1rem;
+            font-weight: bold;
+            letter-spacing: 5px;
+            text-shadow: 0 0 8px var(--neon-green);
         }
 
-        /* Search Container */
-        .search-container {
+        /* --- Main Body --- */
+        main {
+            flex: 1;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             max-width: 800px;
-            margin: 0 auto 3rem;
-        }
-
-        .search-input {
+            margin: 0 auto;
             width: 100%;
-            padding: 1.2rem 2rem;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border: 2px solid rgba(102, 126, 234, 0.3);
-            border-radius: 50px;
-            color: white;
-            font-size: 1.1rem;
-            transition: all 0.3s ease;
         }
 
-        .search-input:focus {
+        .terminal-box {
+            width: 100%;
+            background: var(--terminal-gray);
+            border: 1px solid var(--neon-green);
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 0 20px rgba(0, 255, 65, 0.2);
+        }
+
+        textarea {
+            width: 100%;
+            height: 150px;
+            background: black;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            padding: 10px;
+            font-size: 1rem;
+            resize: none;
             outline: none;
-            border-color: rgba(102, 126, 234, 0.8);
-            background: rgba(255, 255, 255, 0.15);
-            box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+            margin-bottom: 20px;
         }
 
-        .search-input::placeholder {
-            color: rgba(255, 255, 255, 0.5);
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
-        /* Responsive */
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 1.5rem;
-            }
-
-            .hero h1 {
-                font-size: 2rem;
-            }
-
-            .apps-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .modal-content {
-                padding: 1.5rem;
-            }
+        button {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid var(--neon-green);
+            color: var(--neon-green);
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-transform: uppercase;
+            min-width: 150px;
         }
 
-        /* Notification */
-        .notification {
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: rgba(102, 126, 234, 0.95);
-            color: white;
-            padding: 1rem 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-            z-index: 3000;
+        button:hover {
+            background: var(--neon-green);
+            color: black;
+            box-shadow: 0 0 20px var(--neon-green);
+        }
+
+        /* --- Result Areas --- */
+        #qrcode {
+            margin: 20px auto;
+            padding: 10px;
+            background: white; /* QR needs light background to scan */
+            border: 5px solid var(--neon-green);
             display: none;
-            animation: slideIn 0.3s ease;
         }
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
+        #reader {
+            width: 100%;
+            margin-top: 20px;
+            border: 1px solid var(--neon-green) !important;
         }
 
-        .error {
-            background: rgba(255, 59, 48, 0.95);
+        .result-text {
+            margin-top: 15px;
+            padding: 10px;
+            border: 1px dashed var(--neon-green);
+            word-break: break-all;
+            display: none;
+        }
+
+        /* --- Footer --- */
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            border-top: 1px solid var(--neon-green);
+            background: black;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 480px) {
+            .logo-text { font-size: 1.5rem; }
+            .profile-img { width: 45px; height: 45px; }
         }
     </style>
 </head>
 <body>
-    <!-- Notification -->
-    <div id="notification" class="notification"></div>
 
-    <!-- Header -->
     <header>
-        <div class="header-content">
-            <div class="logo">WHO AM I</div>
-            <button class="admin-btn" onclick="openAdminLogin()">Admin Panel</button>
+        <div class="logo-container">
+            <div class="profile-img"></div>
+            <div class="logo-text">WAKAAR</div>
         </div>
     </header>
 
-            <!-- Main User Panel -->
-    <div id="userPanel" class="container">
-        <!-- Search Bar -->
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="🔍 Search apps by name, category, or description..." class="search-input">
-        </div>
-
-        <div class="hero">
-            <h1>Discover Amazing Apps</h1>
-            <p>Explore our curated collection of premium applications</p>
-        </div>
-
-        <div id="appsGrid" class="apps-grid">
-            <!-- Apps will be dynamically loaded here -->
-        </div>
-
-        <div id="emptyState" class="empty-state" style="display: none;">
-            <h3>No Apps Available</h3>
-            <p>Check back soon for new applications</p>
-        </div>
-    </div>
-
-    <!-- Admin Panel -->
-    <div id="adminPanel" class="admin-panel container">
-        <div class="admin-header">
-            <h1>Admin Dashboard</h1>
-            <button class="logout-btn" onclick="logout()">Logout</button>
-        </div>
-
-        <div class="upload-section">
-            <h2>Upload New App</h2>
-            <form id="uploadForm">
-                <div class="form-group">
-                    <label>App Name</label>
-                    <input type="text" id="appName" required>
-                </div>
-
-                <div class="form-group">
-                    <label>App Description</label>
-                    <textarea id="appDescription" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label>Version</label>
-                    <input type="text" id="appVersion" placeholder="e.g., 1.0.0" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Category</label>
-                    <input type="text" id="appCategory" placeholder="e.g., Productivity, Games" required>
-                </div>
-
-                <div class="form-group">
-                    <label>App Icon</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="appIcon" accept="image/*" required>
-                        <label for="appIcon" class="file-input-label">
-                            📱 Choose App Icon
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>Screenshots (Multiple)</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="appScreenshots" accept="image/*" multiple required>
-                        <label for="appScreenshots" class="file-input-label">
-                            🖼️ Choose Screenshots
-                        </label>
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label>APK File</label>
-                    <div class="file-input-wrapper">
-                        <input type="file" id="appApk" accept=".apk" required>
-                        <label for="appApk" class="file-input-label">
-                            📦 Choose APK File
-                        </label>
-                    </div>
-                </div>
-
-                <button type="submit" class="submit-btn">Upload App</button>
-            </form>
-        </div>
-
-        <div class="manage-apps">
-            <h3>Manage Apps</h3>
-            <div id="adminAppsList">
-                <!-- Admin app list will be loaded here -->
+    <main>
+        <div class="terminal-box">
+            <p style="margin-bottom: 10px;">> System.Initialize_QR_Protocol...</p>
+            <textarea id="text-input" placeholder="Enter Name, Number, Email or Script here..."></textarea>
+            
+            <div class="btn-group">
+                <button onclick="generateQR()">Generate QR Code</button>
+                <button onclick="startScanner()">Open Scanner</button>
             </div>
-        </div>
-    </div>
 
-    <!-- Login Modal -->
-    <div id="loginModal" class="modal">
-        <div class="modal-content">
-            <button class="close-modal" onclick="closeLoginModal()">&times;</button>
-            <h2>Admin Login</h2>
-            <form id="loginForm">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="loginEmail" required>
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="loginPassword" required>
-                </div>
-                <button type="submit" class="submit-btn">Login</button>
-            </form>
+            <div id="qrcode"></div>
+            
+            <div id="reader"></div>
+            <div id="scan-result" class="result-text"></div>
         </div>
-    </div>
+    </main>
 
     <footer>
-        <p>© WHO AM I – All Rights Reserved</p>
+        &copy; 2024 WAKAAR | Designed by ANJALI
     </footer>
 
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-
     <script>
-        // Wait for Firebase to load
-        let auth;
-        
-        // ========================================
-        // FIREBASE CONFIGURATION
-        // ========================================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDXiolFWjOFWxGR2CocnntWhkbYPTegKj4",
-            authDomain: "app-store-a5569.firebaseapp.com",
-            projectId: "app-store-a5569",
-            storageBucket: "app-store-a5569.firebasestorage.app",
-            messagingSenderId: "205173888828",
-            appId: "1:205173888828:web:c6002de181ffcd6ee8f039"
-        };
-
-        // Initialize Firebase after scripts load
-        if (typeof firebase !== 'undefined') {
-            firebase.initializeApp(firebaseConfig);
-            auth = firebase.auth();
-        } else {
-            console.error('Firebase failed to load');
-        }
-
-        // ========================================
-        // GLOBAL STATE
-        // ========================================
-        let currentUser = null;
-        let apps = [];
-        let filteredApps = [];
-
-        // ========================================
-        // LOAD APPS FROM LOCALSTORAGE
-        // ========================================
-        function loadApps() {
-            const storedApps = localStorage.getItem('appStoreApps');
-            if (storedApps) {
-                apps = JSON.parse(storedApps);
-            }
-            filteredApps = [...apps];
-            displayApps();
-        }
-
-        // ========================================
-        // SAVE APPS TO LOCALSTORAGE
-        // ========================================
-        function saveApps() {
-            localStorage.setItem('appStoreApps', JSON.stringify(apps));
-        }
-
-        // ========================================
-        // DISPLAY APPS IN USER PANEL
-        // ========================================
-        function displayApps() {
-            const appsGrid = document.getElementById('appsGrid');
-            const emptyState = document.getElementById('emptyState');
-
-            if (filteredApps.length === 0) {
-                appsGrid.style.display = 'none';
-                emptyState.style.display = 'block';
-                
-                // Check if it's due to search or no apps
-                if (apps.length === 0) {
-                    emptyState.innerHTML = '<h3>No Apps Available</h3><p>Check back soon for new applications</p>';
-                } else {
-                    emptyState.innerHTML = '<h3>No Results Found</h3><p>Try searching with different keywords</p>';
-                }
+        // --- QR Generation Logic ---
+        function generateQR() {
+            const text = document.getElementById('text-input').value;
+            const qrContainer = document.getElementById('qrcode');
+            
+            if (text.trim() === "") {
+                alert("Please enter some text first!");
                 return;
             }
 
-            appsGrid.style.display = 'grid';
-            emptyState.style.display = 'none';
-            appsGrid.innerHTML = '';
+            qrContainer.innerHTML = ""; // Clear previous QR
+            qrContainer.style.display = "block";
 
-            filteredApps.forEach(app => {
-                const card = document.createElement('div');
-                card.className = 'app-card';
-                
-                const screenshotsHTML = app.screenshots.map(ss => 
-                    `<img src="${ss}" class="screenshot" alt="Screenshot" onclick="window.open('${ss}', '_blank')">`
-                ).join('');
-
-                card.innerHTML = `
-                    <img src="${app.icon}" class="app-icon" alt="${app.name}">
-                    <div class="app-name">${app.name}</div>
-                    <div class="app-category">${app.category}</div>
-                    <div class="app-description">${app.description}</div>
-                    <div class="screenshots">${screenshotsHTML}</div>
-                    <button class="download-btn" onclick="downloadApp('${app.apkUrl}', '${app.name}')">
-                        Download APK
-                    </button>
-                    <div class="app-version">Version ${app.version}</div>
-                `;
-                
-                appsGrid.appendChild(card);
+            new QRCode(qrContainer, {
+                text: text,
+                width: 200,
+                height: 200,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
             });
         }
 
-        // ========================================
-        // DOWNLOAD APP
-        // ========================================
-        function downloadApp(url, name) {
-            const link = document.createElement('a');
-            link.href = url;
-            link.download = `${name}.apk`;
-            link.click();
-            showNotification(`Downloading ${name}...`);
-        }
-
-        // ========================================
-        // ADMIN LOGIN
-        // ========================================
-        function openAdminLogin() {
-            document.getElementById('loginModal').style.display = 'flex';
-        }
-
-        function closeLoginModal() {
-            document.getElementById('loginModal').style.display = 'none';
-        }
-
-        document.getElementById('loginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
+        // --- QR Scanner Logic ---
+        function startScanner() {
+            const resultElement = document.getElementById('scan-result');
+            resultElement.style.display = "none";
             
-            const email = document.getElementById('loginEmail').value;
-            const password = document.getElementById('loginPassword').value;
-
-            try {
-                const userCredential = await auth.signInWithEmailAndPassword(email, password);
-                currentUser = userCredential.user;
-                
-                closeLoginModal();
-                showAdminPanel();
-                showNotification('Login successful!');
-                
-                document.getElementById('loginForm').reset();
-            } catch (error) {
-                showNotification('Login failed: ' + error.message, true);
-            }
-        });
-
-        // ========================================
-        // SHOW ADMIN PANEL
-        // ========================================
-        function showAdminPanel() {
-            document.getElementById('userPanel').style.display = 'none';
-            document.getElementById('adminPanel').style.display = 'block';
-            loadAdminApps();
-        }
-
-        // ========================================
-        // SHOW USER PANEL
-        // ========================================
-        function showUserPanel() {
-            document.getElementById('userPanel').style.display = 'block';
-            document.getElementById('adminPanel').style.display = 'none';
-        }
-
-        // ========================================
-        // LOGOUT
-        // ========================================
-        async function logout() {
-            try {
-                await auth.signOut();
-                currentUser = null;
-                showUserPanel();
-                showNotification('Logged out successfully');
-            } catch (error) {
-                showNotification('Logout failed: ' + error.message, true);
-            }
-        }
-
-        // ========================================
-        // UPLOAD APP
-        // ========================================
-        document.getElementById('uploadForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-
-            const name = document.getElementById('appName').value;
-            const description = document.getElementById('appDescription').value;
-            const version = document.getElementById('appVersion').value;
-            const category = document.getElementById('appCategory').value;
+            const html5QrCode = new Html5Qrcode("reader");
             
-            const iconFile = document.getElementById('appIcon').files[0];
-            const screenshotFiles = document.getElementById('appScreenshots').files;
-            const apkFile = document.getElementById('appApk').files[0];
+            const config = { fps: 10, qrbox: { width: 250, height: 250 } };
 
-            if (!iconFile || !screenshotFiles.length || !apkFile) {
-                showNotification('Please select all required files', true);
-                return;
-            }
-
-            // Convert files to base64 (simulating file storage)
-            const icon = await fileToBase64(iconFile);
-            const screenshots = await Promise.all(
-                Array.from(screenshotFiles).map(file => fileToBase64(file))
-            );
-            const apkUrl = await fileToBase64(apkFile);
-
-            const newApp = {
-                id: Date.now().toString(),
-                name,
-                description,
-                version,
-                category,
-                icon,
-                screenshots,
-                apkUrl
-            };
-
-            apps.push(newApp);
-            saveApps();
-            displayApps();
-            loadAdminApps();
-
-            showNotification('App uploaded successfully!');
-            document.getElementById('uploadForm').reset();
-        });
-
-        // ========================================
-        // FILE TO BASE64
-        // ========================================
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
+            html5QrCode.start({ facingMode: "environment" }, config, (decodedText) => {
+                resultElement.innerText = "SCANNED DATA: " + decodedText;
+                resultElement.style.display = "block";
+                html5QrCode.stop(); // Stop scanning after success
+            }).catch((err) => {
+                console.log("Scanner error: ", err);
             });
         }
-
-        // ========================================
-        // LOAD ADMIN APPS
-        // ========================================
-        function loadAdminApps() {
-            const adminAppsList = document.getElementById('adminAppsList');
-            
-            if (apps.length === 0) {
-                adminAppsList.innerHTML = '<p style="text-align: center; color: rgba(255,255,255,0.5);">No apps uploaded yet</p>';
-                return;
-            }
-
-            adminAppsList.innerHTML = '';
-            
-            apps.forEach(app => {
-                const item = document.createElement('div');
-                item.className = 'app-list-item';
-                item.innerHTML = `
-                    <div>
-                        <strong>${app.name}</strong> (v${app.version})
-                        <div style="color: rgba(255,255,255,0.6); font-size: 0.9rem;">${app.category}</div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteApp('${app.id}')">Delete</button>
-                `;
-                adminAppsList.appendChild(item);
-            });
-        }
-
-        // ========================================
-        // DELETE APP
-        // ========================================
-        function deleteApp(id) {
-            if (confirm('Are you sure you want to delete this app?')) {
-                apps = apps.filter(app => app.id !== id);
-                saveApps();
-                displayApps();
-                loadAdminApps();
-                showNotification('App deleted successfully');
-            }
-        }
-
-        // ========================================
-        // SHOW NOTIFICATION
-        // ========================================
-        function showNotification(message, isError = false) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.className = 'notification' + (isError ? ' error' : '');
-            notification.style.display = 'block';
-
-            setTimeout(() => {
-                notification.style.display = 'none';
-            }, 3000);
-        }
-
-        // ========================================
-        // AUTH STATE OBSERVER
-        // ========================================
-        auth.onAuthStateChanged((user) => {
-            if (user) {
-                currentUser = user;
-            } else {
-                currentUser = null;
-                showUserPanel();
-            }
-        });
-
-        // ========================================
-        // INITIALIZE ON LOAD
-        // ========================================
-        window.addEventListener('DOMContentLoaded', () => {
-            loadApps();
-            
-            // Setup search functionality
-            const searchInput = document.getElementById('searchInput');
-            searchInput.addEventListener('input', (e) => {
-                const searchTerm = e.target.value.toLowerCase().trim();
-                
-                if (searchTerm === '') {
-                    filteredApps = [...apps];
-                } else {
-                    filteredApps = apps.filter(app => {
-                        return app.name.toLowerCase().includes(searchTerm) ||
-                               app.category.toLowerCase().includes(searchTerm) ||
-                               app.description.toLowerCase().includes(searchTerm);
-                    });
-                }
-                
-                displayApps();
-            });
-        });
-
-        // Update file input labels when files are selected
-        document.getElementById('appIcon').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                e.target.nextElementSibling.textContent = `📱 ${e.target.files[0].name}`;
-            }
-        });
-
-        document.getElementById('appScreenshots').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                e.target.nextElementSibling.textContent = `🖼️ ${e.target.files.length} screenshot(s) selected`;
-            }
-        });
-
-        document.getElementById('appApk').addEventListener('change', function(e) {
-            if (e.target.files.length > 0) {
-                e.target.nextElementSibling.textContent = `📦 ${e.target.files[0].name}`;
-            }
-        });
     </script>
 </body>
 </html>
